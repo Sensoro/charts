@@ -1,25 +1,29 @@
 import type { LineConfig } from '@sensoro-design/charts';
-import React, { useEffect, useState } from 'react';
-
 import { Line } from '@sensoro-design/charts';
+import React, { useEffect, useState } from 'react';
 import EditorDemo from '../../../docs/components/Editor';
 
 export default () => {
   const [config, setConfig] = useState<LineConfig>({
-    // 注释
-    padding: 'auto',
-    xField: 'Date',
-    yField: 'scales',
-    xAxis: {
-      // type: 'timeCat',
-      tickCount: 5,
-    },
     data: [],
+    xField: 'year',
+    yField: 'value',
+    seriesField: 'category',
+    xAxis: {
+      type: 'time',
+    },
+    yAxis: {
+      label: {
+        // 数值格式化为千分位
+        formatter: (v) =>
+          `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+      },
+    },
   });
 
   const asyncFetch = () => {
     fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
+      'https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json',
     )
       .then((response) => response.json())
       .then((json) => setConfig({ ...config, data: json }))

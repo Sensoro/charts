@@ -14,6 +14,7 @@ export default () => {
       // type: 'timeCat',
       tickCount: 5,
     },
+    smooth: true,
     data: [],
   });
 
