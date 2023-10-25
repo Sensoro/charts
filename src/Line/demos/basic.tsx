@@ -7,21 +7,17 @@ import EditorDemo from '../../../docs/components/Editor';
 export default () => {
   const [config, setConfig] = useState<LineConfig['config']>({
     data: [],
-    xField: 'year',
-    yField: 'value',
-    seriesField: 'category',
-    // yAxis: {
-    //   label: {
-    //     // 数值格式化为千分位
-    //     formatter: (v) =>
-    //       `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
-    //   },
-    // },
+    xField: 'Date',
+    yField: 'scales',
+    xAxis: {
+      // type: 'timeCat',
+      tickCount: 5,
+    },
   });
 
   const asyncFetch = () => {
     fetch(
-      'https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json',
+      'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
     )
       .then((response) => response.json())
       .then((json) => setConfig({ ...config, data: json }))
@@ -54,8 +50,8 @@ export default () => {
           legend={{
             processData: (name, index) => `类型${name}${index + 1}`,
           }}
-          title="多条折线图"
-          type="multiple"
+          title="基础折线图"
+          type="basic"
           config={config}
           customContentData={(data) => {
             return map(data, (item, idx) => ({
