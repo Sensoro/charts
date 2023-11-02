@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_sensoro_design_charts=self.webpackChunk_sensoro_design_charts||[]).push([[9],{55171:function(i,n,e){e.r(n),e.d(n,{default:function(){return t}});var s=e(85155),o=e(50959),r=function(){var d=(0,s.UO)(),u=d.id,m=(0,s.WF)(),c=m.demos,f=c[u]||{},a=f.component;return a&&(0,o.createElement)(a)},t=r}}]);
