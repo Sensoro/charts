@@ -1,47 +1,35 @@
-import type { LineConfig } from '@sensoro-design/charts';
-import { Line } from '@sensoro-design/charts';
-import { map } from 'lodash';
-import React, { useState } from 'react';
+import type { AreaConfig } from '@sensoro-design/charts';
+import { Area } from '@sensoro-design/charts';
+import { slice } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import EditorDemo from '../../../docs/components/Editor';
 
 export default () => {
-  const [config, setConfig] = useState<LineConfig['config']>({
+  const [config, setConfig] = useState<AreaConfig['config']>({
+    data: [],
     xField: 'Date',
     yField: 'scales',
-    xAxis: {
-      // type: 'timeCat',
-      tickCount: 5,
+    tooltip: {
+      formatter: (data: any) => {
+        return { name: '销售额', value: data.scales };
+      },
     },
-    data: [
-      { Date: '2010-01', scales: 1998 },
-      { Date: '2010-02', scales: 1850 },
-      { Date: '2010-03', scales: 1720 },
-      { Date: '2010-04', scales: 1818 },
-      { Date: '2010-05', scales: 1920 },
-      { Date: '2010-06', scales: 1802 },
-      { Date: '2010-07', scales: 1945 },
-      { Date: '2010-08', scales: 1856 },
-      { Date: '2010-09', scales: 2107 },
-      { Date: '2010-10', scales: 2140 },
-      { Date: '2010-11', scales: 2311 },
-      { Date: '2010-12', scales: 1972 },
-    ],
   });
 
-  // const asyncFetch = () => {
-  //   fetch(
-  //     'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
-  //   )
-  //     .then((response) => response.json())
-  //     .then((json) => setConfig({ ...config, data: json }))
-  //     .catch((error) => {
-  //       console.log('fetch data failed', error);
-  //     });
-  // };
+  const asyncFetch = () => {
+    fetch(
+      'https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json',
+    )
+      .then((response) => response.json())
+      .then((json) => setConfig({ ...config, data: slice(json, 0, 10) }))
+      .catch((error) => {
+        console.log('fetch data failed', error);
+      });
+  };
 
-  // useEffect(() => {
-  //   asyncFetch();
-  // }, []);
+  useEffect(() => {
+    asyncFetch();
+  }, []);
 
   return (
     <div
@@ -59,25 +47,7 @@ export default () => {
         />
       </div>
       <div style={{ width: '60%' }}>
-        <Line
-          legend={{
-            processData: (name, index) => `类型${name}${index + 1}`,
-          }}
-          title="基础折线图"
-          type="basic"
-          showPoint
-          config={config}
-          customContentData={(data) => {
-            return map(data, (item, idx) => ({
-              ...item,
-              name: `类型${idx + 1}`,
-              value: `${item.value}`.replace(
-                /\d{1,3}(?=(\d{3})+$)/g,
-                (s) => `${s},`,
-              ),
-            }));
-          }}
-        />
+        <Area title="基础折线图" type="gradient" config={config} />
       </div>
     </div>
   );
