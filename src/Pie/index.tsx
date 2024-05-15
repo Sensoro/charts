@@ -39,6 +39,10 @@ const genDefaultConfig = ({
         customsColors,
       }),
       legend: false,
+      // 去掉环形图中间的点
+      tooltip: {
+        showMarkers: false,
+      },
     },
     ring: {
       ...getDefaultConfig({
@@ -52,6 +56,10 @@ const genDefaultConfig = ({
         customsColors,
       }),
       legend: false,
+      // 去掉环形图中间的点
+      tooltip: {
+        showMarkers: false,
+      },
     },
   };
 };
