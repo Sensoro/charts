@@ -129,7 +129,7 @@ const Area: FC<AreaConfig> = ({
       },
       {},
     );
-    return generateColorMap(data);
+    return generateColorMap(data, undefined, config.color as string[]);
   }, [legendMap]);
 
   const newConfig = merge(

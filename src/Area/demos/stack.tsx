@@ -9,6 +9,7 @@ export default () => {
     xField: 'date',
     yField: 'value',
     seriesField: 'country',
+    color: ['#46A3F0', '#20CEDB'],
   });
 
   const asyncFetch = () => {
