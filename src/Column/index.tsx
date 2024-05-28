@@ -10,7 +10,7 @@ import { generateColorMap } from '../utils';
 import './index.less';
 
 export interface ColumnConfig extends BaseConfig {
-  type: 'basic' | 'group' | 'bidirection'; // 基础、分组、双向
+  type: 'basic' | 'group' | 'bidirection' | 'stack'; // 基础、分组、双向
   title?: string;
   data?: BaseColumnConfig['data'];
   config?: Omit<BaseColumnConfig, 'data'> & { data?: BaseColumnConfig['data'] };
@@ -47,6 +47,19 @@ const genDefaultConfig = ({
       legend: false,
     },
     bidirection: {
+      ...getDefaultConfig({
+        tooltip: true,
+        tooltipBox: typeof legend === 'object' && legend?.type === 'box',
+        showTooltipTitle,
+        colorMap,
+        seriesField,
+        customContentData,
+      }),
+      marginRatio: -1,
+      columnWidthRatio: 0.8,
+      legend: false,
+    },
+    stack: {
       ...getDefaultConfig({
         tooltip: true,
         tooltipBox: typeof legend === 'object' && legend?.type === 'box',
