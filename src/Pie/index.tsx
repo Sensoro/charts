@@ -18,7 +18,7 @@ export interface PieConfig extends BaseConfig {
   title?: string;
   customsColors?: string[]; // 自定义lengend 色值
   data?: BasePieConfig['data'] & { value: number };
-  config?: Omit<BasePieConfig, 'data'> & { data?: BasePieConfig['data'] };
+  config: Omit<BasePieConfig, 'data'> & { data?: BasePieConfig['data'] };
 }
 
 const genDefaultConfig = ({
@@ -29,6 +29,10 @@ const genDefaultConfig = ({
 }: Partial<GetDefaultConfigProps>) => {
   return {
     pie: {
+      // 去掉环形图中间的点
+      tooltip: {
+        showMarkers: false,
+      },
       ...getDefaultConfig({
         pie: true,
         tooltipBox: true,
@@ -39,12 +43,12 @@ const genDefaultConfig = ({
         customsColors,
       }),
       legend: false,
+    },
+    ring: {
       // 去掉环形图中间的点
       tooltip: {
         showMarkers: false,
       },
-    },
-    ring: {
       ...getDefaultConfig({
         pie: true,
         ring: true,
@@ -56,10 +60,6 @@ const genDefaultConfig = ({
         customsColors,
       }),
       legend: false,
-      // 去掉环形图中间的点
-      tooltip: {
-        showMarkers: false,
-      },
     },
   };
 };
@@ -94,7 +94,13 @@ const Pie: FC<PieConfig> = ({
   const isRingZero = useMemo(() => {
     if (isEmpty(originalData)) return false;
     // @ts-ignore
-    return type === 'ring' && every(originalData, (data) => data.value === 0);
+    return (
+      type === 'ring' &&
+      every(
+        originalData,
+        (data: Record<string, any>) => data[config.angleField as string] === 0,
+      )
+    );
   }, [originalData]);
 
   const legendMap = useMemo(
@@ -134,11 +140,10 @@ const Pie: FC<PieConfig> = ({
 
   if (isRingZero) {
     // 使用 newConfig 中的theme 覆盖默认的
-    Object.assign({
+    Object.assign(newConfig, {
       theme: {
         colors10: Array.from(Array(10), () => '#F6F7F8'),
       },
-      newConfig,
     });
     tootip = false;
   }
