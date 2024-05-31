@@ -122,7 +122,9 @@ const Legend: React.FC<LegendProps> = ({ legend, colors }) => {
               <SVG
                 src={marker}
                 preProcessor={(code) =>
-                  code.replace(/fill=".*?"/g, `fill="${colors[name]}"`)
+                  code
+                    .replace(/fill=".*?"/g, `fill="${colors[name]}"`)
+                    .replace(/fill='.*?'/g, `fill='${colors[name]}'`)
                 }
                 style={{ marginRight: 8 }}
                 width={8}

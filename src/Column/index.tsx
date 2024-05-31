@@ -14,6 +14,7 @@ export interface ColumnConfig extends BaseConfig {
   title?: string;
   data?: BaseColumnConfig['data'];
   config?: Omit<BaseColumnConfig, 'data'> & { data?: BaseColumnConfig['data'] };
+  customsColors?: string[]; // 自定义lengend 色值
 }
 
 const genDefaultConfig = ({
@@ -89,6 +90,7 @@ const Column: FC<ColumnConfig> = ({
   empty,
   tooltip,
   customContentData,
+  customsColors,
 }) => {
   const { seriesField } = config ?? {};
   const originalData = useMemo(
@@ -111,7 +113,7 @@ const Column: FC<ColumnConfig> = ({
       },
       {},
     );
-    return generateColorMap(data);
+    return generateColorMap(data, undefined, customsColors);
   }, [legendMap]);
 
   const newConfig = merge(

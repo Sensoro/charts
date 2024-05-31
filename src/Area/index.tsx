@@ -16,6 +16,7 @@ export interface AreaConfig extends BaseConfig {
   title?: string;
   data?: BaseAreaConfig['data'];
   config?: Omit<BaseAreaConfig, 'data'> & { data?: BaseAreaConfig['data'] };
+  customsColors?: string[]; // 自定义lengend 色值
 }
 
 const genDefaultConfig = ({
@@ -107,6 +108,7 @@ const Area: FC<AreaConfig> = ({
   empty,
   customContentData,
   tooltip,
+  customsColors,
 }) => {
   const { seriesField } = config;
   const originalData = useMemo(
@@ -129,7 +131,11 @@ const Area: FC<AreaConfig> = ({
       },
       {},
     );
-    return generateColorMap(data, undefined, config.color as string[]);
+    return generateColorMap(
+      data,
+      undefined,
+      (config.color as string[]) || customsColors,
+    );
   }, [legendMap]);
 
   const newConfig = merge(
