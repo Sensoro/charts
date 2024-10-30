@@ -12,6 +12,10 @@ nav:
 
 <code src="./demos/basic.tsx"></code>
 
+### 基础矩形树图
+
+<code src="./demos/basic2.tsx"></code>
+
 ### 多级矩形树图
 
 <code src="./demos/multiple.tsx"></code>
