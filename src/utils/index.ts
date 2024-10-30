@@ -90,7 +90,7 @@ export const calculateOffset = ({
     (document.querySelector(
       `${className ? `.${className}.sen-${type}` : `.sen-${type}`}`,
     )?.clientWidth ?? 300) - extraWidth;
-  const width = newConfig.width ?? defaultHeight;
+  const width = newConfig.height ?? defaultHeight;
 
   if (
     typeof legend === 'object' &&

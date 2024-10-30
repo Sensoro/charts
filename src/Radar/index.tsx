@@ -101,7 +101,7 @@ const Radar: FC<RadarConfig> = ({
       legend,
       newConfig,
       defaultHeight: 154,
-      extraWidth: 96,
+      // extraWidth: 96,
     });
     setRightPadding(rightPadding);
     setWidth(width);
