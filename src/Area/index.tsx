@@ -134,7 +134,7 @@ const Area: FC<AreaConfig> = ({
     return generateColorMap(
       data,
       undefined,
-      (config.color as string[]) || customsColors,
+      (config?.color as string[]) || customsColors,
     );
   }, [legendMap]);
 

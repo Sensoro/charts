@@ -40,6 +40,7 @@ const Gauge: FC<GaugeConfig> = ({
   style = {},
   className = '',
   empty,
+  customsColors,
 }) => {
   const { registerShape, Util } = G2; // 自定义 Shape 部分
 
@@ -169,11 +170,7 @@ const Gauge: FC<GaugeConfig> = ({
         ];
 
         const pinStyle = pin.style || {};
-        const {
-          lineWidth = 8,
-          fill = defaultColor,
-          stroke = defaultColor,
-        } = pinStyle;
+        const { lineWidth = 8, stroke = defaultColor } = pinStyle;
         group.addShape('path', {
           name: 'pin-outer',
           attrs: {
@@ -217,8 +214,8 @@ const Gauge: FC<GaugeConfig> = ({
 
     const { labels = ['成功', '失败'] } = legend as BaseLegend;
     const colors: { [key: string]: string } = {};
-    colors[labels[0]] = COLORS_SMALL[0];
-    colors[labels[1]] = '#ECEEF0';
+    colors[labels[0]] = customsColors?.[0] || COLORS_SMALL[0];
+    colors[labels[1]] = customsColors?.[1] || '#ECEEF0';
 
     return colors;
   }, [legend]);

@@ -47,6 +47,7 @@ const Radar: FC<RadarConfig> = ({
   customContentData,
   empty,
   tooltip,
+  customsColors,
 }) => {
   const [rightPadding, setRightPadding] = useState(0);
   const [width, setWidth] = useState(154);
@@ -73,7 +74,11 @@ const Radar: FC<RadarConfig> = ({
       {},
     );
 
-    return generateColorMap(data);
+    return generateColorMap(
+      data,
+      undefined,
+      (config?.color as string[]) || customsColors,
+    );
   }, [legendMap]);
 
   const newConfig = merge(

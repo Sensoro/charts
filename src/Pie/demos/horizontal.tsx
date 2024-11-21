@@ -39,7 +39,7 @@ export default () => {
       </div>
       <div style={{ width: '60%' }}>
         <Pie
-          title="环图"
+          title="环图 横向布局"
           type="ring"
           config={config}
           style={{ width: 384 }}

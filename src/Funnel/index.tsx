@@ -78,6 +78,7 @@ const Funnel: FC<FunnelConfig> = ({
   empty,
   tooltip,
   customContentData,
+  customsColors,
 }) => {
   const { seriesField, xField } = config ?? {};
   const originalData = useMemo(
@@ -100,7 +101,11 @@ const Funnel: FC<FunnelConfig> = ({
       },
       {},
     );
-    return generateColorMap(data);
+    return generateColorMap(
+      data,
+      undefined,
+      (config?.color as string[]) || customsColors,
+    );
   }, [legendMap]);
 
   const newConfig = merge(

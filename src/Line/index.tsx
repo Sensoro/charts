@@ -78,6 +78,7 @@ const Line: FC<LineConfig> = ({
   legend,
   timeRange,
   customContentData,
+  customsColors,
   style = {},
   className = '',
   empty,
@@ -104,7 +105,11 @@ const Line: FC<LineConfig> = ({
       },
       {},
     );
-    return generateColorMap(data);
+    return generateColorMap(
+      data,
+      undefined,
+      (config?.color as string[]) || customsColors,
+    );
   }, [legendMap]);
 
   const newConfig = useMemo(

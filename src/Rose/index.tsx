@@ -49,6 +49,7 @@ const Rose: FC<RoseConfig> = ({
   className = '',
   customContentData,
   empty,
+  customsColors,
 }) => {
   const [rightPadding, setRightPadding] = useState(0);
   const [width, setWidth] = useState(154);
@@ -75,7 +76,11 @@ const Rose: FC<RoseConfig> = ({
       {},
     );
 
-    return generateColorMap(data);
+    return generateColorMap(
+      data,
+      undefined,
+      (config?.color as string[]) || customsColors,
+    );
   }, [legendMap]);
 
   const newConfig = merge(

@@ -118,7 +118,11 @@ const Pie: FC<PieConfig> = ({
       {},
     );
 
-    return generateColorMap(data, undefined, customsColors);
+    return generateColorMap(
+      data,
+      undefined,
+      (config?.color as string[]) || customsColors,
+    );
   }, [legendMap]);
 
   const newConfig = merge(
