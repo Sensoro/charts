@@ -131,7 +131,7 @@ const Pie: FC<PieConfig> = ({
       colorMap,
       colorField,
       customContentData,
-      customsColors,
+      customsColors: (config?.color as string[]) || customsColors,
     })[type],
     config,
     {

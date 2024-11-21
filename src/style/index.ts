@@ -88,3 +88,47 @@ export const COLORS_LARGE = [
   PURPLE_1,
   PURPLE_3,
 ];
+
+export const TOOLTIP_STYLE = {
+  'g2-tooltip': {
+    boxShadow: 'none',
+    backgroundColor: 'rgba(10, 27, 57, 0.8)',
+    padding: '12px 12px 8px',
+  },
+  'g2-tooltip-title': {
+    color: '#c2c7ce',
+    fontSize: 12,
+    lineHeight: '20px',
+    margin: '0 0 4px',
+  },
+  'g2-tooltip-name': {
+    color: '#fff',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    fontWeight: 400,
+  },
+  'g2-tooltip-value': {
+    color: '#fff',
+    fontFamily: 'DIN Alternate',
+    marginLeft: '16px',
+    textAlign: 'right',
+  },
+  'g2-tooltip-marker': {
+    borderRadius: '1px',
+    height: '8px',
+    width: '8px',
+  },
+  'g2-tooltip-list-item': {
+    fontSize: 12,
+    lineHeight: '20px',
+    height: '20px',
+    margin: '0 0 4px',
+  },
+  'g2-tooltip-list': {
+    display: 'flex',
+    flexDirection: 'row',
+    rowGap: '4px',
+    maxWidth: '360px',
+  },
+};

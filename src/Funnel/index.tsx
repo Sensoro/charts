@@ -116,6 +116,7 @@ const Funnel: FC<FunnelConfig> = ({
       customContentData,
       legend,
       showTooltipTitle: typeof tooltip === 'object' ? tooltip.showTitle : true,
+      customsColors: (config?.color as string[]) || customsColors,
     })[type],
     config,
     {

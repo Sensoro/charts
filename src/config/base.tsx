@@ -5,7 +5,7 @@ import type { ColorMap } from '../utils';
 import { get, map } from 'lodash';
 import SVG from 'react-inlinesvg';
 import marker from '../assets/marker.svg';
-import { COLORS_LARGE, COLORS_SMALL } from '../style';
+import { COLORS_LARGE, COLORS_SMALL, TOOLTIP_STYLE } from '../style';
 
 export interface GetDefaultConfigProps extends BaseConfig {
   /** 自定义标点 */
@@ -247,152 +247,11 @@ export const getDefaultConfig = ({
     });
   }
 
-  if (tooltip) {
+  if (tooltip || tooltipBox) {
     Object.assign(config, {
       tooltip: {
         ...config.tooltip,
-        domStyles: {
-          'g2-tooltip': {
-            boxShadow: 'none',
-            backgroundColor: 'rgba(10, 27, 57, 0.8)',
-            padding: '12px 12px 8px',
-          },
-          'g2-tooltip-title': {
-            color: '#c2c7ce',
-            fontSize: 12,
-            lineHeight: '20px',
-            margin: '0 0 4px',
-          },
-          'g2-tooltip-name': {
-            color: '#fff',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            fontWeight: 400,
-          },
-          'g2-tooltip-value': {
-            color: '#fff',
-            fontFamily: 'DIN Alternate',
-            marginLeft: '16px',
-            textAlign: 'right',
-          },
-          'g2-tooltip-marker': {
-            borderRadius: '1px',
-            height: '8px',
-            width: '8px',
-          },
-          'g2-tooltip-list-item': {
-            fontSize: 12,
-            lineHeight: '20px',
-            height: '20px',
-            margin: '0 0 4px',
-          },
-          'g2-tooltip-list': {
-            display: 'flex',
-            flexDirection: 'row',
-            rowGap: '4px',
-            maxWidth: '360px',
-          },
-        },
-        customContent: (title: string, original: any[]) => {
-          const data = customContentData
-            ? customContentData(original)
-            : original;
-
-          return (
-            <>
-              {showTooltipTitle && (
-                <div className={`${prefixCls}-title`}>{title}</div>
-              )}
-              <ul className={`${prefixCls}-list`}>
-                <div>
-                  {map(data, (item, idx) => {
-                    const color = seriesField
-                      ? colorMap?.[get(item, `data.${seriesField}`)]
-                      : COLORS_SMALL[0];
-
-                    return (
-                      <li key={idx} className={`${prefixCls}-list-item`}>
-                        <SVG
-                          src={marker}
-                          preProcessor={(code) =>
-                            code.replace(/fill=".*?"/g, `fill="${color}"`)
-                          }
-                          style={{ marginRight: 8 }}
-                          width={8}
-                          height={8}
-                        />
-                        <span className={`${prefixCls}-name`}>{item.name}</span>
-                      </li>
-                    );
-                  })}
-                </div>
-
-                <div>
-                  {map(data, (item, idx) => {
-                    return (
-                      <li key={idx} className={`${prefixCls}-list-item`}>
-                        <span className={`${prefixCls}-value`}>
-                          {item.value}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </div>
-              </ul>
-            </>
-          );
-        },
-      },
-    });
-  }
-
-  if (tooltipBox) {
-    Object.assign(config, {
-      tooltip: {
-        ...config.tooltip,
-        domStyles: {
-          'g2-tooltip': {
-            boxShadow: 'none',
-            backgroundColor: 'rgba(10, 27, 57, 0.8)',
-            padding: '12px 12px 8px',
-          },
-          'g2-tooltip-title': {
-            color: '#c2c7ce',
-            fontSize: 12,
-            lineHeight: '20px',
-            margin: '0 0 4px',
-          },
-          'g2-tooltip-name': {
-            color: '#fff',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-          },
-          'g2-tooltip-value': {
-            color: '#fff',
-            fontFamily: 'DIN Alternate',
-            marginLeft: '16px',
-            textAlign: 'right',
-          },
-          'g2-tooltip-marker': {
-            borderRadius: '1px',
-            height: '8px',
-            width: '8px',
-          },
-          'g2-tooltip-list-item': {
-            fontSize: 12,
-            lineHeight: '20px',
-            height: '20px',
-            margin: '0 0 4px',
-          },
-          'g2-tooltip-list': {
-            display: 'flex',
-            flexDirection: 'row',
-            rowGap: '4px',
-            maxWidth: '360px',
-          },
-        },
+        domStyles: TOOLTIP_STYLE,
         customContent: (title: string, original: any[]) => {
           const data = customContentData
             ? customContentData(original)
@@ -413,10 +272,22 @@ export const getDefaultConfig = ({
                         key={`left-${idx}`}
                         className={`${prefixCls}-list-item`}
                       >
-                        <span
-                          className={`${prefixCls}-marker`}
-                          style={{ background: color }}
-                        />
+                        {tooltipBox ? (
+                          <span
+                            className={`${prefixCls}-marker`}
+                            style={{ background: color }}
+                          />
+                        ) : (
+                          <SVG
+                            src={marker}
+                            preProcessor={(code) =>
+                              code.replace(/fill=".*?"/g, `fill="${color}"`)
+                            }
+                            style={{ marginRight: 8 }}
+                            width={8}
+                            height={8}
+                          />
+                        )}
                         <span className={`${prefixCls}-name`}>{item.name}</span>
                       </li>
                     );
