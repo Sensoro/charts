@@ -1,11 +1,10 @@
-import React from 'react';
-import type { BaseConfig } from '../types';
-import type { ColorMap } from '../utils';
-
 import { get, map } from 'lodash';
+import React from 'react';
 import SVG from 'react-inlinesvg';
 import marker from '../assets/marker.svg';
 import { COLORS_LARGE, COLORS_SMALL, TOOLTIP_STYLE } from '../style';
+import type { BaseConfig, BaseLegend } from '../types';
+import type { ColorMap } from '../utils';
 
 export interface GetDefaultConfigProps extends BaseConfig {
   /** 自定义标点 */
@@ -14,6 +13,7 @@ export interface GetDefaultConfigProps extends BaseConfig {
   tooltip?: boolean;
   /** 自定义 Tooltip */
   tooltipBox?: boolean;
+  tooltipType?: BaseLegend['type'];
   /** 是否展示 Tooltip title */
   showTooltipTitle?: boolean;
   /** 自定义颜色映射值 */
@@ -60,6 +60,7 @@ export const getDefaultConfig = ({
   point,
   tooltip,
   tooltipBox,
+  tooltipType,
   showTooltipTitle = true,
   colorMap,
   customsColors,
@@ -247,7 +248,7 @@ export const getDefaultConfig = ({
     });
   }
 
-  if (tooltip || tooltipBox) {
+  if (tooltip || tooltipBox || tooltipType) {
     Object.assign(config, {
       tooltip: {
         ...config.tooltip,
@@ -266,13 +267,16 @@ export const getDefaultConfig = ({
                 <div>
                   {map(data, (item, idx) => {
                     const color = item.color ?? COLORS_SMALL[0];
+                    const type = Array.isArray(tooltipType)
+                      ? tooltipType[idx % tooltipType.length]
+                      : tooltipType;
 
                     return (
                       <li
                         key={`left-${idx}`}
                         className={`${prefixCls}-list-item`}
                       >
-                        {tooltipBox ? (
+                        {tooltipBox || type === 'box' ? (
                           <span
                             className={`${prefixCls}-marker`}
                             style={{ background: color }}

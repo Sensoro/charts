@@ -16,7 +16,7 @@ export interface BaseLegend {
   aloneGap?: number;
   processData?: (name: string, index: number) => string;
   /** 图例类型 */
-  type?: 'svg' | 'box';
+  type?: 'svg' | 'box' | ('svg' | 'box')[];
   /** 自定义图例样式 */
   textStyle?: React.CSSProperties;
   /** 没有分组情况下需要展示多个图例，图例名称 */

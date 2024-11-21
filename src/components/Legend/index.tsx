@@ -116,33 +116,40 @@ const Legend: React.FC<LegendProps> = ({ legend, colors }) => {
         })}
         style={lineGap}
       >
-        {map(keys(curtLegend), (name, index) => (
-          <div className={`${prefixCls}-item`} key={name}>
-            {type === 'svg' ? (
-              <SVG
-                src={marker}
-                preProcessor={(code) =>
-                  code
-                    .replace(/fill=".*?"/g, `fill="${colors[name]}"`)
-                    .replace(/fill='.*?'/g, `fill='${colors[name]}'`)
-                }
-                style={{ marginRight: 8 }}
-                width={8}
-                height={8}
-              />
-            ) : (
-              <span
-                className={`${prefixCls}-box`}
-                style={{ background: colors[name] }}
-              />
-            )}
-            <span className={`${prefixCls}-name`} style={textStyle}>
-              {legend?.processData && isFunction(legend?.processData)
-                ? legend.processData(name, index)
-                : name}
-            </span>
-          </div>
-        ))}
+        {map(keys(curtLegend), (name, index) => {
+          let tmp = type;
+          if (Array.isArray(type)) {
+            tmp = type[index % type.length];
+          }
+
+          return (
+            <div className={`${prefixCls}-item`} key={name}>
+              {tmp === 'svg' ? (
+                <SVG
+                  src={marker}
+                  preProcessor={(code) =>
+                    code
+                      .replace(/fill=".*?"/g, `fill="${colors[name]}"`)
+                      .replace(/fill='.*?'/g, `fill='${colors[name]}'`)
+                  }
+                  style={{ marginRight: 8 }}
+                  width={8}
+                  height={8}
+                />
+              ) : (
+                <span
+                  className={`${prefixCls}-box`}
+                  style={{ background: colors[name] }}
+                />
+              )}
+              <span className={`${prefixCls}-name`} style={textStyle}>
+                {legend?.processData && isFunction(legend?.processData)
+                  ? legend.processData(name, index)
+                  : name}
+              </span>
+            </div>
+          );
+        })}
       </Space>
       {!!legend.pageRow && (
         <div className={`${prefixCls}-page`}>
