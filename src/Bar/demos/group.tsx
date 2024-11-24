@@ -9,51 +9,51 @@ const data = [
     type: 'series1',
     value: 2800,
   },
-  {
-    label: 'Mon.',
-    type: 'series2',
-    value: 2260,
-  },
+  // {
+  //   label: 'Mon.',
+  //   type: 'series2',
+  //   value: 2260,
+  // },
   {
     label: 'Tues.',
     type: 'series1',
     value: 1800,
   },
-  {
-    label: 'Tues.',
-    type: 'series2',
-    value: 1300,
-  },
+  // {
+  //   label: 'Tues.',
+  //   type: 'series2',
+  //   value: 1300,
+  // },
   {
     label: 'Wed.',
     type: 'series1',
     value: 950,
   },
-  {
-    label: 'Wed.',
-    type: 'series2',
-    value: 900,
-  },
+  // {
+  //   label: 'Wed.',
+  //   type: 'series2',
+  //   value: 900,
+  // },
   {
     label: 'Thur.',
     type: 'series1',
     value: 500,
   },
+  // {
+  //   label: 'Thur.',
+  //   type: 'series2',
+  //   value: 390,
+  // },
   {
-    label: 'Thur.',
-    type: 'series2',
-    value: 390,
-  },
-  {
-    label: 'Fri.',
+    label: 'Fri',
     type: 'series1',
     value: 170,
   },
-  {
-    label: 'Fri.',
-    type: 'series2',
-    value: 100,
-  },
+  // {
+  //   label: 'Fri.',
+  //   type: 'series2',
+  //   value: 100,
+  // },
 ];
 
 export default () => {
@@ -79,7 +79,7 @@ export default () => {
         />
       </div>
       <div style={{ width: '60%' }}>
-        <Bar config={config} type="alone" />
+        <Bar config={config} type="alone" title="标题独立行条形图" />
       </div>
     </div>
   );

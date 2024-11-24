@@ -24,6 +24,14 @@ const data = [
     year: '1958 年',
     value: 48,
   },
+  {
+    year: '1959 年',
+    value: 62,
+  },
+  {
+    year: '1960 年',
+    value: 78,
+  },
 ];
 
 export default () => {
