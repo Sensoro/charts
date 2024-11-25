@@ -6,6 +6,7 @@ import React from 'react';
 import Composite from '../components/Composite';
 import { getDefaultConfig } from '../config/base';
 import type { BaseConfig } from '../types';
+import './index.less';
 
 interface Child {
   [key: string]: any;
