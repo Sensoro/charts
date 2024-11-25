@@ -1,11 +1,12 @@
 import type { BarConfig as BaseBarConfig } from '@ant-design/plots';
 import { Bar as BaseBar } from '@ant-design/plots';
-import { entries, groupBy, map, merge, sumBy } from 'lodash';
+import { entries, groupBy, map, merge, sumBy, transform } from 'lodash';
 import React, { useMemo, type FC } from 'react';
 import Composite from '../components/Composite';
 import type { GetDefaultConfigProps } from '../config/base';
 import { getDefaultConfig } from '../config/base';
 import type { BaseConfig } from '../types';
+import { generateColorMap } from '../utils';
 import type { CustomBarProps } from './CustomBar';
 import './index.less';
 
@@ -101,7 +102,7 @@ const genDefaultConfig = ({
         customContentData,
       }),
       ...getDefaultBarConfig('basic'),
-      tooltip: false,
+      // tooltip: false,
     },
     alone: {
       ...getDefaultConfig({
@@ -117,7 +118,7 @@ const genDefaultConfig = ({
           alignItems: 'flex-start', // 左对齐
         },
       ],
-      tooltip: false,
+      // tooltip: false,
     },
     range: {
       ...getDefaultConfig({
@@ -156,10 +157,17 @@ const Bar: FC<BarConfig> = ({
   style = {},
   className = '',
   tooltip,
+  legend = false,
   customContentData,
   labelFormatter,
+  customsColors,
 }) => {
-  const { yField = 'label', xField = 'value', isStack } = config || {};
+  const {
+    yField = 'label',
+    xField = 'value',
+    isStack = false,
+    seriesField,
+  } = config || {};
 
   // 转换数据格式
   const originalData = useMemo(
@@ -185,13 +193,36 @@ const Bar: FC<BarConfig> = ({
         value: labelFormatter ? labelFormatter(item.value) : item.value,
       }));
 
+  const legendMap = useMemo(
+    () => (seriesField ? groupBy(originalData, seriesField) : {}),
+    [seriesField, originalData],
+  );
+
+  const colorMap = useMemo(() => {
+    const data = transform(
+      legendMap,
+      (result: Record<string, ''>, value, key) => {
+        result[key] = '';
+        return result;
+      },
+      {},
+    );
+    return generateColorMap(
+      data,
+      undefined,
+      (config?.color as string[]) || customsColors,
+    );
+  }, [legendMap]);
+
+  const height =
+    labelData.length * 8 +
+    (labelData.length - 1) * (type === 'alone' ? 36 : 21) +
+    (type === 'alone' ? 36 : 20);
+
   // 生成新的配置
   const newConfig = merge(
     {
-      height:
-        labelData.length * 8 +
-        (labelData.length - 1) * (type === 'alone' ? 36 : 21) +
-        (type === 'alone' ? 36 : 20),
+      height,
     },
     genDefaultConfig({
       showTooltipTitle: typeof tooltip === 'object' ? tooltip.showTitle : true,
@@ -203,17 +234,45 @@ const Bar: FC<BarConfig> = ({
     },
   ) as BaseBarConfig;
 
+  if ((type === 'alone' || type === 'basic') && !isStack) {
+    newConfig.tooltip = false;
+  }
+
   return (
     <div className={`${prefixCls} ${className}`} style={style}>
       <div className={`${prefixCls}-main`}>
-        <Composite title={title} legend={false} timeRange={timeRange}>
+        <Composite
+          title={title}
+          legend={legend}
+          seriesField={seriesField}
+          colorMap={colorMap}
+          timeRange={timeRange}
+        >
           {
             empty ? (
               <div className={`${prefixCls}-empty`}>
                 {typeof empty === 'boolean' ? '暂无内容' : empty}
               </div>
             ) : (
-              <BaseBar {...newConfig} style={{ flex: 1 }} />
+              <div style={{ display: 'flex', height }}>
+                <BaseBar {...newConfig} />
+                {showLabelValue.includes(type) && (
+                  <div
+                    className={`${prefixCls}-label-value ${
+                      type === 'alone' ? `${prefixCls}-label-value-alone` : ''
+                    }`}
+                  >
+                    {labelData.map((item) => (
+                      <div
+                        key={item.label}
+                        className={`${prefixCls}-label-value-item`}
+                      >
+                        {item.value}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             )
             //   ['basic', 'alone'].includes(type) ? (
             // <CustomBar type={type as 'basic' | 'alone'} data={originalData} />
@@ -223,19 +282,6 @@ const Bar: FC<BarConfig> = ({
           }
         </Composite>
       </div>
-      {showLabelValue.includes(type) && (
-        <div
-          className={`${prefixCls}-label-value ${
-            type === 'alone' ? `${prefixCls}-label-value-alone` : ''
-          }`}
-        >
-          {labelData.map((item) => (
-            <div key={item.label} className={`${prefixCls}-label-value-item`}>
-              {item.value}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
