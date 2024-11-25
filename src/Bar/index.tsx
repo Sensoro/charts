@@ -13,6 +13,7 @@ export interface BarConfig extends BaseConfig {
   title?: string;
   type?: 'basic' | 'alone' | 'range' | 'multiRange'; // 正常、单独行、区间条形图、多行区间条形图
   data?: CustomBarProps['data'];
+  labelFormatter?: (text: number | string) => string;
   config: Omit<BaseBarConfig, 'data'> & { data?: CustomBarProps['data'] };
 }
 
@@ -156,6 +157,7 @@ const Bar: FC<BarConfig> = ({
   className = '',
   tooltip,
   customContentData,
+  labelFormatter,
 }) => {
   const { yField = 'label', xField = 'value', isStack } = config || {};
 
@@ -174,11 +176,13 @@ const Bar: FC<BarConfig> = ({
   const labelData = isStack
     ? map(entries(groupBy(originalData, yField)), ([key, value]) => ({
         label: key,
-        value: sumBy(value, 'value'),
+        value: labelFormatter
+          ? labelFormatter(sumBy(value, 'value'))
+          : sumBy(value, 'value'),
       }))
     : originalData.map((item) => ({
         label: item.label,
-        value: item.value,
+        value: labelFormatter ? labelFormatter(item.value) : item.value,
       }));
 
   // 生成新的配置
