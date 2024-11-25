@@ -1,6 +1,6 @@
 import type { BarConfig as BaseBarConfig } from '@ant-design/plots';
 import { Bar as BaseBar } from '@ant-design/plots';
-import { map, merge, groupBy, entries, sumBy  } from 'lodash';
+import { entries, groupBy, map, merge, sumBy } from 'lodash';
 import React, { useMemo, type FC } from 'react';
 import Composite from '../components/Composite';
 import type { GetDefaultConfigProps } from '../config/base';
@@ -37,7 +37,9 @@ const defaultInlineLabel = {
         let truncatedText = text;
         while (truncatedText.length > 0) {
           truncatedText = truncatedText.slice(0, -1);
-          const truncatedWidth = context.measureText(truncatedText + '...').width;
+          const truncatedWidth = context.measureText(
+            truncatedText + '...',
+          ).width;
           if (truncatedWidth <= maxWidth) {
             return truncatedText + '...';
           }
@@ -45,8 +47,8 @@ const defaultInlineLabel = {
       }
     }
     return text;
-  }
-}
+  },
+};
 
 const defaultAloneLabel = {
   position: 'left',
@@ -59,7 +61,7 @@ const defaultAloneLabel = {
     lineHeight: 20,
     textAlign: 'left',
   },
-}
+};
 
 const getDefaultBarConfig = (type: 'basic' | 'alone') => ({
   legend: false,
@@ -74,7 +76,7 @@ const getDefaultBarConfig = (type: 'basic' | 'alone') => ({
       lineHeight: 20,
     },
   },
-  marginRatio: 0,  // 关闭自动调整间距
+  marginRatio: 0, // 关闭自动调整间距
   interactions: [], // 交互设置为空，不显示hover效果
   xAxis: false, // 隐藏x轴
   label: false, // 关闭默认标签
@@ -109,11 +111,11 @@ const genDefaultConfig = ({
       }),
       ...getDefaultBarConfig('alone'),
       layout: [
-  {
-    type: 'flex',
-    alignItems: 'flex-start',  // 左对齐
-  }
-],
+        {
+          type: 'flex',
+          alignItems: 'flex-start', // 左对齐
+        },
+      ],
       tooltip: false,
     },
     range: {
@@ -169,24 +171,28 @@ const Bar: FC<BarConfig> = ({
     [data, config?.data],
   );
   // 条形图右侧数值labelData 数据
-  const labelData = isStack ? map(entries(groupBy(originalData, yField)), ([key, value]) => ({
-    label: key,
-    value: sumBy(value, 'value'),
-  })) : originalData.map((item) => ({
-    label: item.label,
-    value: item.value,
-  }));
+  const labelData = isStack
+    ? map(entries(groupBy(originalData, yField)), ([key, value]) => ({
+        label: key,
+        value: sumBy(value, 'value'),
+      }))
+    : originalData.map((item) => ({
+        label: item.label,
+        value: item.value,
+      }));
 
   // 生成新的配置
   const newConfig = merge(
-    {},
+    {
+      height:
+        labelData.length * 8 +
+        (labelData.length - 1) * (type === 'alone' ? 36 : 21) +
+        (type === 'alone' ? 36 : 20),
+    },
     genDefaultConfig({
       showTooltipTitle: typeof tooltip === 'object' ? tooltip.showTitle : true,
       customContentData,
     })[type],
-    {
-      height: labelData.length * 8 + (labelData.length - 1) * (type === 'alone' ? 36 : 21) + (type === 'alone' ? 36 : 20),
-     },
     config,
     {
       data: originalData,
@@ -197,29 +203,35 @@ const Bar: FC<BarConfig> = ({
     <div className={`${prefixCls} ${className}`} style={style}>
       <div className={`${prefixCls}-main`}>
         <Composite title={title} legend={false} timeRange={timeRange}>
-          {empty ? (
-          <div className={`${prefixCls}-empty`}>
-            {typeof empty === 'boolean' ? '暂无内容' : empty}
-          </div>
-          ) : <BaseBar {...newConfig} style={{flex: 1}}  />
-          //   ['basic', 'alone'].includes(type) ? (
-          // <CustomBar type={type as 'basic' | 'alone'} data={originalData} />
-          // ) : (
-          //   <BaseBar {...newConfig} style={{flex: 1}} />
-          // )
+          {
+            empty ? (
+              <div className={`${prefixCls}-empty`}>
+                {typeof empty === 'boolean' ? '暂无内容' : empty}
+              </div>
+            ) : (
+              <BaseBar {...newConfig} style={{ flex: 1 }} />
+            )
+            //   ['basic', 'alone'].includes(type) ? (
+            // <CustomBar type={type as 'basic' | 'alone'} data={originalData} />
+            // ) : (
+            //   <BaseBar {...newConfig} style={{flex: 1}} />
+            // )
           }
         </Composite>
       </div>
-      {showLabelValue.includes(type) && <div className={`${prefixCls}-label-value ${type === 'alone' ? `${prefixCls}-label-value-alone` : ''}`}>
-        {labelData.map((item) => (
-          <div
-            key={item.label}
-            className={`${prefixCls}-label-value-item`}
-          >
-            {item.value}
-          </div>
-        ))}
-      </div>}
+      {showLabelValue.includes(type) && (
+        <div
+          className={`${prefixCls}-label-value ${
+            type === 'alone' ? `${prefixCls}-label-value-alone` : ''
+          }`}
+        >
+          {labelData.map((item) => (
+            <div key={item.label} className={`${prefixCls}-label-value-item`}>
+              {item.value}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
