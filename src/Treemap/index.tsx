@@ -27,7 +27,7 @@ export interface TreemapConfig extends BaseTreemapConfig, BaseConfig {
   };
 }
 
-const prefixCls = 'sen-pie';
+const prefixCls = 'sen-treemap';
 
 const Treemap: FC<TreemapConfig> = ({
   title,
