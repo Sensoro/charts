@@ -37,7 +37,7 @@ const genDefaultConfig = ({
   };
 };
 
-const prefixCls = 'sen-DualAxes';
+const prefixCls = 'sen-dualAxes';
 
 const DualAxes: FC<DualAxesConfig> = (props) => {
   const {
