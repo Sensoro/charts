@@ -255,7 +255,7 @@ const Bar: FC<BarConfig> = ({
               </div>
             ) : (
               <div style={{ display: 'flex', height }}>
-                <BaseBar {...newConfig} />
+                <BaseBar {...newConfig} className={`${prefixCls}-main`} />
                 {showLabelValue.includes(type) && (
                   <div
                     className={`${prefixCls}-label-value ${
