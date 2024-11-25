@@ -20,7 +20,6 @@ export interface DualAxesConfig extends BaseConfig {
 
 const genDefaultConfig = ({
   colorMap,
-  seriesField,
   customContentData,
   legend,
   showTooltipTitle,
@@ -29,10 +28,9 @@ const genDefaultConfig = ({
     ...getDefaultConfig({
       tooltip: true,
       tooltipBox: typeof legend === 'object' && legend?.type === 'box',
-      tooltipType: typeof legend === 'object' && legend?.type,
+      tooltipType: typeof legend === 'object' ? legend?.type : undefined,
       showTooltipTitle,
       colorMap,
-      seriesField,
       customContentData,
     }),
     legend: false,
@@ -55,7 +53,7 @@ const DualAxes: FC<DualAxesConfig> = (props) => {
     customContentData,
     customsColors,
   } = props;
-  const { seriesField } = config ?? {};
+
   const originalData = useMemo(
     () =>
       map(data ?? config?.data, (item, idx) => ({ ...item, __index__: idx })),
@@ -74,11 +72,31 @@ const DualAxes: FC<DualAxesConfig> = (props) => {
     return generateColorMap(data, undefined, customsColors);
   }, [config?.yField]);
 
+  // 默认双 y 轴配置
+  const yAxis = useMemo(() => {
+    if (config?.yField.length === 2) {
+      return {
+        [config?.yField[0]]: {
+          min: 0,
+          tickCount: 5,
+        },
+        [config?.yField[1]]: {
+          min: 0,
+          max: 100,
+          tickCount: 5,
+          label: {
+            formatter: (v: number) => `${v}%`,
+          },
+        },
+      };
+    }
+    return {};
+  }, [config?.yField]);
+
   const newConfig = merge(
-    {},
+    { yAxis },
     genDefaultConfig({
       colorMap,
-      seriesField,
       customContentData,
       legend,
       showTooltipTitle: typeof tooltip === 'object' ? tooltip.showTitle : true,

@@ -29,20 +29,20 @@ export default () => {
     data,
     xField: 'time',
     yField: ['事件数量', '完结率'],
-    yAxis: {
-      事件数量: {
-        min: 0, // 第一个 y 轴从 0 开始
-        tickCount: 5,
-      },
-      完结率: {
-        min: 0, // 第二个 y 轴从 0 开始
-        max: 100,
-        tickCount: 5,
-        label: {
-          formatter: (v) => `${v}%`,
-        },
-      },
-    },
+    // yAxis: {
+    //   事件数量: {
+    //     min: 0, // 第一个 y 轴从 0 开始
+    //     tickCount: 5,
+    //   },
+    //   完结率: {
+    //     min: 0, // 第二个 y 轴从 0 开始
+    //     max: 100,
+    //     tickCount: 5,
+    //     label: {
+    //       formatter: (v) => `${v}%`,
+    //     },
+    //   },
+    // },
     geometryOptions: [
       // 柱状图配置
       {
