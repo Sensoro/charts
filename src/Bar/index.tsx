@@ -240,48 +240,46 @@ const Bar: FC<BarConfig> = ({
 
   return (
     <div className={`${prefixCls} ${className}`} style={style}>
-      <div className={`${prefixCls}-main`}>
-        <Composite
-          title={title}
-          legend={legend}
-          seriesField={seriesField}
-          colorMap={colorMap}
-          timeRange={timeRange}
-        >
-          {
-            empty ? (
-              <div className={`${prefixCls}-empty`}>
-                {typeof empty === 'boolean' ? '暂无内容' : empty}
-              </div>
-            ) : (
-              <div style={{ display: 'flex', height }}>
-                <BaseBar {...newConfig} className={`${prefixCls}-main`} />
-                {showLabelValue.includes(type) && (
-                  <div
-                    className={`${prefixCls}-label-value ${
-                      type === 'alone' ? `${prefixCls}-label-value-alone` : ''
-                    }`}
-                  >
-                    {labelData.map((item) => (
-                      <div
-                        key={item.label}
-                        className={`${prefixCls}-label-value-item`}
-                      >
-                        {item.value}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-            //   ['basic', 'alone'].includes(type) ? (
-            // <CustomBar type={type as 'basic' | 'alone'} data={originalData} />
-            // ) : (
-            //   <BaseBar {...newConfig} style={{flex: 1}} />
-            // )
-          }
-        </Composite>
-      </div>
+      <Composite
+        title={title}
+        legend={legend}
+        seriesField={seriesField}
+        colorMap={colorMap}
+        timeRange={timeRange}
+      >
+        {
+          empty ? (
+            <div className={`${prefixCls}-empty`}>
+              {typeof empty === 'boolean' ? '暂无内容' : empty}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', height }}>
+              <BaseBar {...newConfig} className={`${prefixCls}-main`} />
+              {showLabelValue.includes(type) && (
+                <div
+                  className={`${prefixCls}-label-value ${
+                    type === 'alone' ? `${prefixCls}-label-value-alone` : ''
+                  }`}
+                >
+                  {labelData.map((item) => (
+                    <div
+                      key={item.label}
+                      className={`${prefixCls}-label-value-item`}
+                    >
+                      {item.value}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+          //   ['basic', 'alone'].includes(type) ? (
+          // <CustomBar type={type as 'basic' | 'alone'} data={originalData} />
+          // ) : (
+          //   <BaseBar {...newConfig} style={{flex: 1}} />
+          // )
+        }
+      </Composite>
     </div>
   );
 };
