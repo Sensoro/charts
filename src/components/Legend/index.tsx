@@ -123,7 +123,7 @@ const Legend: React.FC<LegendProps> = ({ legend, colors }) => {
           }
 
           return (
-            <div className={`${prefixCls}-item`} key={name}>
+            <div className={`${prefixCls}-item`} key={`${name}-${index}`}>
               {tmp === 'svg' ? (
                 <SVG
                   src={marker}
