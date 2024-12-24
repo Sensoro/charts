@@ -8,7 +8,7 @@ nav:
 
 # Bar 条形图
 
-### 基础条形图
+<!-- ### 基础条形图
 
 <code src="./demos/basic.tsx"></code>
 
@@ -18,13 +18,13 @@ nav:
 
 ### 基础堆叠条形图
 
-<code src="./demos/basicStack.tsx"></code>
+<code src="./demos/basicStack.tsx"></code> -->
 
 ### 独立标题堆叠条形图
 
 <code src="./demos/aloneTitleStack.tsx"></code>
 
-### 区间条形图
+<!-- ### 区间条形图
 
 <code src="./demos/range.tsx"></code>
 
@@ -34,4 +34,4 @@ nav:
 
 ### 空状态
 
-<code src="./demos/empty.tsx"></code>
+<code src="./demos/empty.tsx"></code> -->

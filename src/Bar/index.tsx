@@ -254,7 +254,7 @@ const Bar: FC<BarConfig> = ({
                 {typeof empty === 'boolean' ? '暂无内容' : empty}
               </div>
             ) : (
-              <div style={{ display: 'flex', height }}>
+              <div style={{ display: 'flex', height: config.height || height }}>
                 <BaseBar {...newConfig} className={`${prefixCls}-main`} />
                 {showLabelValue.includes(type) && (
                   <div
